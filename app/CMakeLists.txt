@@ -18,6 +18,7 @@ target_sources(app PRIVATE
 
     ./view/EditorView.cpp
     ./view/PreviewView.cpp
+    ./view/WelcomeView.cpp
 
 )
 
