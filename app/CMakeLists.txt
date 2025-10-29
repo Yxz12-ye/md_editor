@@ -9,6 +9,16 @@ add_executable(app ./main.cpp)
 target_sources(app PRIVATE 
     ./MainWindow.cpp
 
+    ./model/DocumentModel.cpp
+    ./model/FileManager.cpp
+    ./model/MarkdownParser.cpp
+    ./model/SyntaxHighlighter.cpp
+
+    ./presenter/EditorPresenter.cpp
+
+    ./view/EditorView.cpp
+    ./view/PreviewView.cpp
+
 )
 
 target_include_directories(
