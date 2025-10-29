@@ -6,6 +6,8 @@
 #include <ElaWindow.h>
 #include <ElaMenu.h>
 #include <ElaMenuBar.h>
+#include <ElaTabWidget.h>
+#include "view/CoreView.h"
 
 class MainWindow : public ElaWindow
 {
@@ -15,8 +17,13 @@ private:
     ElaMenuBar* menuBar;
     QList<QAction*> actionList;
     WelcomeView* welcomeView;
+    CoreView* page;
+
     void initMenu();
+    void initContent();
 public:
     MainWindow();
     ~MainWindow(){};
+
+    void resizeEvent(QResizeEvent *event);
 };

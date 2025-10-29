@@ -11,10 +11,24 @@ void MainWindow::initMenu()
     this->setMenuBar(menuBar);
 }
 
+void MainWindow::initContent()
+{
+    page = new CoreView(nullptr);
+    welcomeView = new WelcomeView(nullptr);
+    this->setIsNavigationBarEnable(false);
+    page->get()->addTab(welcomeView,tr("Welcome"));
+    page->get()->setMinimumSize(this->size());
+    page->setMinimumSize(this->size());
+    this->setCentralCustomWidget(page);
+}
+
 MainWindow::MainWindow()
 {
     initMenu();
-    welcomeView = new WelcomeView(nullptr);
-    this->setCentralCustomWidget(welcomeView);
-    this->setIsNavigationBarEnable(false);
+    initContent();
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    return;
 }
