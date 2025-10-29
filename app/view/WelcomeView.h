@@ -1,17 +1,19 @@
 #pragma once
 
-#include <QWidget>
 #include <QVBoxLayout>
+#include <ElaWidget.h>
 #include <QLabel>
-#include <QPushButton>
+#include <ElaPushButton.h>
+#include <ElaScrollArea.h>
+#include <ElaText.h>
 
-class WelcomeView : public QWidget
+class WelcomeView : public ElaScrollArea
 {
     Q_OBJECT
 private:
     QVBoxLayout* verticalContiner;
-    QLabel* welcomeMessage;
-    QPushButton* newFile_button;
+    ElaText* welcomeMessage;
+    ElaPushButton* newFile_button;
 public:
     WelcomeView(QWidget* parent = nullptr);
     ~WelcomeView(){};

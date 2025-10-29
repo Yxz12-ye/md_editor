@@ -3,6 +3,7 @@ project(app VERSION 0.1.0 LANGUAGES C CXX)
 
 find_package(cmark-gfm CONFIG REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
+message(${ElaWidgetTools_LIBRARIES})
 
 add_executable(app ./main.cpp)
 
@@ -28,6 +29,13 @@ target_include_directories(
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${ElaWidgetTools_INCLUDE_DIRS}
 )
 
-target_link_libraries(app PRIVATE libcmark-gfm Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(app PRIVATE 
+    libcmark-gfm 
+    Qt6::Core 
+    Qt6::Gui 
+    Qt6::Widgets
+    ${ElaWidgetTools_LIBRARY_DIRS}/${ElaWidgetTools_LIBRARIES}.lib
+)

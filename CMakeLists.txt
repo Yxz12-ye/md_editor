@@ -13,4 +13,6 @@ if(CMAKE_USE_VCPKG)
     endif()
 endif()
 
+include(${CMAKE_SOURCE_DIR}/3rd-party/ElaWidgetTools/lib/cmake/ElaWidgetToolsConfig.cmake)
+
 add_subdirectory(./app)

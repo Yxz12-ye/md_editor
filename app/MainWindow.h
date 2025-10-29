@@ -2,17 +2,17 @@
 
 #include <QWidget>
 #include <QPlainTextEdit>
-#include <QMainWindow>
-#include <QMenuBar>
-#include <QMenu>
 #include "view/WelcomeView.h"
+#include <ElaWindow.h>
+#include <ElaMenu.h>
+#include <ElaMenuBar.h>
 
-class MainWindow : public QMainWindow
+class MainWindow : public ElaWindow
 {
     Q_OBJECT
 private:
-    QMenu* fileMenu;
-    QMenuBar* menuBar;
+    ElaMenu* fileMenu;
+    ElaMenuBar* menuBar;
     QList<QAction*> actionList;
     WelcomeView* welcomeView;
     void initMenu();
