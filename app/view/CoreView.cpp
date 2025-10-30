@@ -1,6 +1,6 @@
 #include "CoreView.h"
 
-CoreView::CoreView(QWidget *parent):ElaScrollArea(parent)
+CoreView::CoreView(QWidget *parent):BaseView(parent)
 {
     pageContiner = new ElaTabWidget(this);
 }

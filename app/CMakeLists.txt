@@ -21,6 +21,7 @@ target_sources(app PRIVATE
     ./view/PreviewView.cpp
     ./view/WelcomeView.cpp
     ./view/CoreView.cpp
+    ./view/BaseView.cpp
 
 )
 

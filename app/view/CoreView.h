@@ -4,10 +4,10 @@
 #include <ElaTabWidget.h>
 #include <ElaScrollPage.h>
 #include <ElaScrollArea.h>
+#include "BaseView.h"
 
-class CoreView : public ElaScrollArea
+class CoreView : public BaseView
 {
-    Q_OBJECT
 private:
     ElaTabWidget* pageContiner;
 public:

@@ -6,10 +6,10 @@
 #include <ElaPushButton.h>
 #include <ElaScrollArea.h>
 #include <ElaText.h>
+#include "BaseView.h"
 
-class WelcomeView : public ElaScrollArea
+class WelcomeView : public BaseView
 {
-    Q_OBJECT
 private:
     QVBoxLayout* verticalContiner;
     ElaText* welcomeMessage;

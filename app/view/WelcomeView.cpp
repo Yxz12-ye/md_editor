@@ -1,6 +1,6 @@
 #include "WelcomeView.h"
 
-WelcomeView::WelcomeView(QWidget *parent)
+WelcomeView::WelcomeView(QWidget *parent):BaseView(parent)
 {
     verticalContiner = new QVBoxLayout(this);
     welcomeMessage = new ElaText(tr("Welcome! Press the button to start!"));
