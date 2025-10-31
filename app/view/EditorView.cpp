@@ -1,8 +1,17 @@
 #include "EditorView.h"
 
-EditorView::EditorView(QWidget *parent): BaseView(parent)
+void EditorView::initConnection()
+{
+    connect(editArea, &ElaPlainTextEdit::textChanged, this, [=]{
+        // 测试用, 实际连接位置可能不在这
+    });
+}
+
+EditorView::EditorView(QWidget *parent) : BaseView(parent)
 {
     editArea = new ElaPlainTextEdit(this);
+    document = editArea->document();
+    initConnection();
 }
 
 void EditorView::updataSize(const QSize &size)
