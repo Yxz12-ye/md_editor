@@ -7,7 +7,9 @@ class EditorView : public BaseView
 private:
     ElaPlainTextEdit* editArea;
 public:
-    EditorView(/* args */){};
+    EditorView(QWidget* parent = nullptr);
     ~EditorView(){};
+
+    void updataSize(const QSize& size);
 };
 

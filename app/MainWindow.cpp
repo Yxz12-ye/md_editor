@@ -15,14 +15,23 @@ void MainWindow::initContent()
 {
     page = new CoreView(this);
     welcomeView = new WelcomeView(page);
+    // 临时放在这里测试
+    editorView = new EditorView(page);
+
     this->setIsNavigationBarEnable(false);
-    page->get()->addTab(welcomeView, tr("Welcome"));
-    page->get()->setMinimumSize(this->size());
+    page->addNewTab(welcomeView, tr("Welcome"));
+    page->addNewTab(editorView, tr("*New File"));
     page->setMinimumSize(this->size());
+    page->updataSize(this->size());
     this->setCentralCustomWidget(page);
 }
 
-MainWindow::MainWindow() : ElaWindow(this)
+void MainWindow::initConnection()
+{
+    
+}
+
+MainWindow::MainWindow() : ElaWindow(nullptr)
 {
     initMenu();
     initContent();
@@ -30,5 +39,13 @@ MainWindow::MainWindow() : ElaWindow(this)
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
+    ElaWindow::resizeEvent(event);
+    QSize adjustedSize = event->size();
+    adjustedSize.setHeight(adjustedSize.height() - 75);
+    if(page){
+        page->resize(adjustedSize);  // 或者使用 resize()
+        page->updataSize(adjustedSize);
+        editorView->updataSize(adjustedSize);
+    }
     return;
 }

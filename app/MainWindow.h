@@ -8,6 +8,7 @@
 #include <ElaMenuBar.h>
 #include <ElaTabWidget.h>
 #include "view/CoreView.h"
+#include "view/EditorView.h"
 
 class MainWindow : public ElaWindow
 {
@@ -18,9 +19,11 @@ private:
     QList<QAction*> actionList;
     WelcomeView* welcomeView;
     CoreView* page;
+    EditorView* editorView;
 
     void initMenu();
     void initContent();
+    void initConnection();
 public:
     MainWindow();
     ~MainWindow(){};

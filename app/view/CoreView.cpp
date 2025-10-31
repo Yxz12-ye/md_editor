@@ -5,10 +5,12 @@ CoreView::CoreView(QWidget *parent) : BaseView(parent)
     pageContiner = new ElaTabWidget(this);
 }
 
-ElaTabWidget *CoreView::get()
+void CoreView::addNewTab(QWidget *widget, const QString &title)
 {
-    if (pageContiner)
-        return pageContiner;
-    else
-        return nullptr;
+    pageContiner->addTab(widget, title);
+}
+
+void CoreView::updataSize(const QSize &size)
+{
+    pageContiner->resize(size);
 }

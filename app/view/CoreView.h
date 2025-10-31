@@ -14,5 +14,6 @@ public:
     CoreView(QWidget* parent = nullptr);
     ~CoreView(){};
 
-    ElaTabWidget* get();
+    void addNewTab(QWidget* widget, const QString& title); // 添加页面接口
+    void updataSize(const QSize& size);
 };
