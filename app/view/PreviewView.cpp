@@ -1,5 +1,5 @@
 #include "PreviewView.h"
 
-PreviewView::PreviewView()
+PreviewView::PreviewView(QWidget *parent): BaseView(parent)
 {
 }

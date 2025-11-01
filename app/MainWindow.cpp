@@ -14,6 +14,7 @@ void MainWindow::initMenu()
 void MainWindow::initContent()
 {
     page = new CoreView(this);
+    editorPresenter = new EditorPresenter(this, page);
     welcomeView = new WelcomeView(page);
     // 临时放在这里测试
     editorView = new EditorView(page);
@@ -28,7 +29,7 @@ void MainWindow::initContent()
 
 void MainWindow::initConnection()
 {
-    
+
 }
 
 MainWindow::MainWindow() : ElaWindow(nullptr)

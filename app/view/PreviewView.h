@@ -1,13 +1,13 @@
 #pragma once
 
 #include <QObject>
+#include "BaseView.h"
 
-class PreviewView: public QObject
+class PreviewView: public BaseView
 {
-    Q_OBJECT
 private:
     /* data */
 public:
-    PreviewView(/* args */);
+    PreviewView(QWidget* parent = nullptr);
     ~PreviewView(){};
 };

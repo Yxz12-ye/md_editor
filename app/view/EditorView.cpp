@@ -9,7 +9,9 @@ void EditorView::initConnection()
 
 EditorView::EditorView(QWidget *parent) : BaseView(parent)
 {
+    splitter = new QSplitter(this);
     editArea = new ElaPlainTextEdit(this);
+    preview = new PreviewView(this);
     document = editArea->document();
     initConnection();
 }

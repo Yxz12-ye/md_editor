@@ -15,8 +15,12 @@ private:
     PreviewView* m_previewView;
     WelcomeView* m_welcomeView;
 
+    void initConnection();
+
 public:
-    EditorPresenter(QObject* parent = nullptr, CoreView* coreView, EditorView* editorView = nullptr, PreviewView* previewView = nullptr, WelcomeView* welcomeView = nullptr);
-    EditorPresenter(QObject* parent = nullptr, CoreView* coreView);
+    EditorPresenter(QObject* parent = nullptr, CoreView* coreView = nullptr);
     ~EditorPresenter(){};
+
+private slots:
+    void onEditorChanged(EditorView* new_editor);
 };

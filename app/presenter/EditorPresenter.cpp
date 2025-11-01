@@ -1,16 +1,16 @@
 #include "EditorPresenter.h"
-    
-EditorPresenter::EditorPresenter(QObject *parent, CoreView *coreView, EditorView *editorView, PreviewView *previewView, WelcomeView *welcomeView)
-    : QObject(parent),
-      m_coreView(coreView),
-      m_editorView(editorView),
-      m_previewView(previewView),
-      m_welcomeView(welcomeView)
+
+void EditorPresenter::initConnection()
 {
+    connect(m_coreView, &CoreView::editorChanged, this, &EditorPresenter::onEditorChanged);
 }
 
 EditorPresenter::EditorPresenter(QObject *parent, CoreView *coreView)
     : QObject(parent),
-    m_coreView(coreView)
+      m_coreView(coreView)
 {
+}
+
+void EditorPresenter::onEditorChanged(EditorView* new_editor){
+    // 更新Model的工作内容
 }

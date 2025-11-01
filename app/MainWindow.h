@@ -9,6 +9,7 @@
 #include <ElaTabWidget.h>
 #include "view/CoreView.h"
 #include "view/EditorView.h"
+#include "presenter/EditorPresenter.h"
 
 class MainWindow : public ElaWindow
 {
@@ -20,6 +21,7 @@ private:
     WelcomeView* welcomeView;
     CoreView* page;
     EditorView* editorView;
+    EditorPresenter* editorPresenter;
 
     void initMenu();
     void initContent();
