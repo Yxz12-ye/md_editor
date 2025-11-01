@@ -16,6 +16,7 @@ private:
     WelcomeView* m_welcomeView;
 
 public:
-    EditorPresenter(QObject* parent = nullptr, CoreView* coreView = nullptr, EditorView* editorView = nullptr, PreviewView* previewView = nullptr, WelcomeView* welcomeView = nullptr);
+    EditorPresenter(QObject* parent = nullptr, CoreView* coreView, EditorView* editorView = nullptr, PreviewView* previewView = nullptr, WelcomeView* welcomeView = nullptr);
+    EditorPresenter(QObject* parent = nullptr, CoreView* coreView);
     ~EditorPresenter(){};
 };

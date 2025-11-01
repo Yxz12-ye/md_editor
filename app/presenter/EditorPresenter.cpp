@@ -8,3 +8,9 @@ EditorPresenter::EditorPresenter(QObject *parent, CoreView *coreView, EditorView
       m_welcomeView(welcomeView)
 {
 }
+
+EditorPresenter::EditorPresenter(QObject *parent, CoreView *coreView)
+    : QObject(parent),
+    m_coreView(coreView)
+{
+}
