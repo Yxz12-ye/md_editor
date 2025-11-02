@@ -14,13 +14,16 @@ private:
     QSplitter* splitter;
     ElaPlainTextEdit* editArea;
     PreviewView* preview;
-    QTextDocument* document;
 
     void initConnection();
+    
 public:
     EditorView(QWidget* parent = nullptr);
     ~EditorView(){};
 
+    QTextDocument* document;
+
     void updataSize(const QSize& size);
+    
 };
 
