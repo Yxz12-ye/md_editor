@@ -42,3 +42,14 @@ View/WelcomeView
 槽函数
 
 `void onTextUpdate()` 当文档内容变化后调用此函数, 函数会进行消抖动, 然后控制`SyntaxHighlighter`更新高亮
+
+## TODO
+
+ - [ ] 完成所有接口
+ - [ ] 实现基础高亮
+ - [ ] 实现代码块内代码高亮
+ - [ ] 完成带行显示的`Widget`
+ - [ ] 阶段性能优化
+ - [ ] 实现Preview, 大致用`WebView`(毕竟我不想把软件做的特别大, 没`WebView`的支持以后再说)
+ - [ ] 性能优化
+ - [ ] 多平台支持
