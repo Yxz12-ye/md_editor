@@ -11,15 +11,17 @@ class EditorPresenter: public QObject
     Q_OBJECT
 private:
     CoreView* m_coreView;
-    EditorView* m_editorView;
-    PreviewView* m_previewView;
-    WelcomeView* m_welcomeView;
 
     void initConnection();
 
 public:
     EditorPresenter(QObject* parent = nullptr, CoreView* coreView = nullptr);
     ~EditorPresenter(){};
+
+    void requestSave(QTextDocument* doc);
+    void onRequiredNewEditor(QTextDocument* doc);
+    void requireSaveAs(QTextDocument* doc);
+    void updateHighlight(int line);
 
 private slots:
     void onEditorChanged(EditorView* new_editor);

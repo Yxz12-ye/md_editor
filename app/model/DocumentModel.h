@@ -17,6 +17,7 @@ public:
     void onSave(QTextDocument* doc);
     QTextDocument* onOpen();
     bool isNull();
+    void requestNewEditor(QTextDocument* doc);
 
 private slots:
     void onTextUpdate();
