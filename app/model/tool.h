@@ -6,8 +6,7 @@
 struct mDocument
 {
     QTextDocument* doc_ptr;
-    QUrl path;
+    QString path;
     mDocument(){};
-    mDocument(QTextDocument* doc, QUrl _path = QUrl()):doc_ptr(doc),path(_path){};
-    bool isPathEmpty(){return path.isEmpty();}
+    mDocument(QTextDocument* doc, QString _path = ""):doc_ptr(doc),path(_path){};
 };
