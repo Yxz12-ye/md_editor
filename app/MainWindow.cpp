@@ -5,7 +5,13 @@ void MainWindow::initMenu()
     menuBar = new ElaMenuBar(this);
     fileMenu = new ElaMenu(tr("File"), this);
     auto newFile_action = new QAction(tr("New File"));
+    auto save_action = new QAction(tr("Save"));
+    auto save_as_action = new QAction(tr("Save As"));
+
     actionList.append(newFile_action);
+    actionList.append(save_action);
+    actionList.append(save_as_action);
+
     fileMenu->addActions(actionList);
     menuBar->addMenu(fileMenu);
     this->setMenuBar(menuBar);
@@ -17,7 +23,7 @@ void MainWindow::initContent()
     editorPresenter = new EditorPresenter(this, page);
     welcomeView = new WelcomeView(page);
     // 临时放在这里测试
-    editorView = new EditorView(page);
+    editorView = new EditorView(page, mDocument());
 
     this->setIsNavigationBarEnable(false);
     page->addNewTab(welcomeView, tr("Welcome"));

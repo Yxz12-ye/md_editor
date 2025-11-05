@@ -2,15 +2,15 @@
 
 #include <QObject>
 #include "view/CoreView.h"
-#include "view/EditorView.h"
-#include "view/PreviewView.h"
-#include "view/WelcomeView.h"
+#include "model/DocumentModel.h"
+#include "model/tool.h"
 
 class EditorPresenter: public QObject
 {
     Q_OBJECT
 private:
     CoreView* m_coreView;
+    DocumentModel* documentModel;
 
     void initConnection();
 
@@ -19,6 +19,7 @@ public:
     ~EditorPresenter(){};
 
     void requestSave(QTextDocument* doc);
+    void requestOpen();
     void onRequiredNewEditor(QTextDocument* doc);
     void requireSaveAs(QTextDocument* doc);
     void updateHighlight(int line);

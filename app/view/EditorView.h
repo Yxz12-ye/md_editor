@@ -6,6 +6,7 @@
 #include <QTextBlock>
 #include "PreviewView.h"
 #include <QSplitter>
+#include "model/tool.h"
 
 class EditorView : public BaseView
 {
@@ -18,10 +19,11 @@ private:
     void initConnection();
     
 public:
-    EditorView(QWidget* parent = nullptr);
+    EditorView(QWidget* parent = nullptr, mDocument doc);
     ~EditorView(){};
 
     QTextDocument* document;
+    mDocument m_document;
 
     void updataSize(const QSize& size);
     

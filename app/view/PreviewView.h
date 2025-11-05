@@ -5,6 +5,7 @@
 
 class PreviewView: public BaseView
 {
+    Q_OBJECT
 private:
     /* data */
 public:

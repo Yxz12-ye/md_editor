@@ -27,3 +27,34 @@ void CoreView::updataSize(const QSize &size)
 {
     pageContiner->resize(size);
 }
+
+void CoreView::addWelcomeTab()
+{
+    auto widget = new WelcomeView(this);
+    addNewTab(widget, tr("Welcome"));
+}
+
+void CoreView::addNewEditorTab(mDocument doc)
+{
+    auto widget = new EditorView(this, doc);
+    /**
+     * @warning 这里感觉有点小问题, 但是现在想不起来
+     */
+    if (!doc.path.isEmpty())
+    {
+        addNewTab(widget, QUrl(doc.path).fileName());
+    }
+    else{
+        addNewTab(widget, tr("*New File"));
+    }
+    
+}
+
+void CoreView::newFile()
+{
+    addNewEditorTab(mDocument());
+}
+
+void CoreView::saveFile()
+{
+}

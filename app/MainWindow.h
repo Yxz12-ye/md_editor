@@ -10,6 +10,7 @@
 #include "view/CoreView.h"
 #include "view/EditorView.h"
 #include "presenter/EditorPresenter.h"
+#include "model/tool.h"
 
 class MainWindow : public ElaWindow
 {

@@ -7,12 +7,19 @@ void EditorView::initConnection()
     });
 }
 
-EditorView::EditorView(QWidget *parent) : BaseView(parent)
+EditorView::EditorView(QWidget *parent, mDocument doc)
 {
     splitter = new QSplitter(this);
     editArea = new ElaPlainTextEdit(this);
     preview = new PreviewView(this);
-    document = editArea->document();
+    if(doc.doc_ptr){
+        editArea->setDocument(doc.doc_ptr);
+        document = doc.doc_ptr;
+    }
+    else{
+        document = editArea->document();
+    }
+    m_document = doc;
     initConnection();
 }
 
