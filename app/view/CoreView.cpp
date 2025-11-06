@@ -25,7 +25,9 @@ void CoreView::addNewTab(QWidget *widget, const QString &title)
 
 void CoreView::updataSize(const QSize &size)
 {
+    startSize = size;
     pageContiner->resize(size);
+    emit updateEditorSize(size);
 }
 
 void CoreView::addWelcomeTab()
@@ -47,7 +49,8 @@ void CoreView::addNewEditorTab(mDocument doc)
     else{
         addNewTab(widget, tr("*New File"));
     }
-    
+    connect(this, &CoreView::updateEditorSize, widget, &EditorView::updataSize);
+    widget->updataSize(startSize);
 }
 
 mDocument CoreView::getCurrentDocument()
@@ -66,5 +69,9 @@ void CoreView::newFile()
 }
 
 void CoreView::saveFile()
+{
+}
+
+void CoreView::saveAs()
 {
 }

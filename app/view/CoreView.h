@@ -14,6 +14,7 @@ class CoreView : public BaseView
     Q_OBJECT
 private:
     ElaTabWidget* pageContiner;
+    QSize startSize;
 
     void initConnection();
 public:
@@ -28,6 +29,7 @@ public:
 
 signals:
     void editorChanged(EditorView* new_editor);
+    void updateEditorSize(const QSize& size);
 
 public slots:
     void newFile();

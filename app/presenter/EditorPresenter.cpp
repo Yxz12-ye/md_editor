@@ -21,10 +21,26 @@ void EditorPresenter::requestSave()
     }
 }
 
+void EditorPresenter::requestOpen()
+{
+}
+
 void EditorPresenter::requestNew()
 {
     qDebug()<<"New File required";
     m_coreView->addNewEditorTab(mDocument());
+}
+
+void EditorPresenter::onRequiredNewEditor(QTextDocument *doc)
+{
+}
+
+void EditorPresenter::requestSaveAs(QTextDocument *doc)
+{
+}
+
+void EditorPresenter::updateHighlight(int line)
+{
 }
 
 void EditorPresenter::onEditorChanged(EditorView* new_editor)

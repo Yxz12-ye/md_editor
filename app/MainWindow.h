@@ -19,9 +19,7 @@ private:
     ElaMenu* fileMenu;
     ElaMenuBar* menuBar;
     QList<QAction*> actionList;
-    WelcomeView* welcomeView;
     CoreView* page;
-    EditorView* editorView;
     EditorPresenter* editorPresenter;
 
     void initMenu();
@@ -31,5 +29,5 @@ public:
     MainWindow();
     ~MainWindow(){};
 
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
 };

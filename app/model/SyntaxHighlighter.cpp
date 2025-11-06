@@ -5,3 +5,7 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument *parent)
 {
     
 }
+
+void SyntaxHighlighter::highlightBlock(const QString &text)
+{
+}

@@ -15,3 +15,21 @@ void DocumentModel::onSave(mDocument doc)
 {
     fileMgr->saveFile(doc);
 }
+
+QTextDocument *DocumentModel::onOpen()
+{
+    return nullptr;
+}
+
+bool DocumentModel::isNull()
+{
+    return false;
+}
+
+void DocumentModel::requestNewEditor(QTextDocument *doc)
+{
+}
+
+void DocumentModel::onTextUpdate(){
+    
+}
