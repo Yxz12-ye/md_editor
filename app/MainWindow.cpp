@@ -35,13 +35,16 @@ void MainWindow::initContent()
 
 void MainWindow::initConnection()
 {
-
+    connect(actionList[0], &QAction::triggered, editorPresenter, &EditorPresenter::requestNew);
+    connect(actionList[1], &QAction::triggered, editorPresenter, &EditorPresenter::requestSave);
+    // connect(actionList[2], &QAction::triggered, editorPresenter, &EditorPresenter::requestSaveAs);
 }
 
 MainWindow::MainWindow() : ElaWindow(nullptr)
 {
     initMenu();
     initContent();
+    initConnection();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)

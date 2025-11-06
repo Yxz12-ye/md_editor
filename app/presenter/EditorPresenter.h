@@ -18,10 +18,11 @@ public:
     EditorPresenter(QObject* parent = nullptr, CoreView* coreView = nullptr);
     ~EditorPresenter(){};
 
-    void requestSave(QTextDocument* doc);
+    void requestSave();
     void requestOpen();
+    void requestNew();
     void onRequiredNewEditor(QTextDocument* doc);
-    void requireSaveAs(QTextDocument* doc);
+    void requestSaveAs(QTextDocument* doc);
     void updateHighlight(int line);
 
 private slots:

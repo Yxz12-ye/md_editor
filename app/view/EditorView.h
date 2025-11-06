@@ -19,7 +19,7 @@ private:
     void initConnection();
     
 public:
-    EditorView(QWidget* parent = nullptr, mDocument doc);
+    EditorView(QWidget* parent = nullptr, mDocument doc = mDocument());
     ~EditorView(){};
 
     QTextDocument* document;

@@ -24,6 +24,7 @@ public:
     void updataSize(const QSize& size);
     void addWelcomeTab();
     void addNewEditorTab(mDocument doc);
+    mDocument getCurrentDocument();
 
 signals:
     void editorChanged(EditorView* new_editor);

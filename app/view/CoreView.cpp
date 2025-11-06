@@ -50,6 +50,16 @@ void CoreView::addNewEditorTab(mDocument doc)
     
 }
 
+mDocument CoreView::getCurrentDocument()
+{
+    auto p = pageContiner->currentWidget();
+    EditorView* m = qobject_cast<EditorView*>(p);
+    if(m){
+        return m->m_document;
+    }
+    return mDocument();
+}
+
 void CoreView::newFile()
 {
     addNewEditorTab(mDocument());

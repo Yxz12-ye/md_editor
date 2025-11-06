@@ -2,19 +2,22 @@
 
 #include <QObject>
 #include <QTextDocument>
+#include "model/tool.h"
+#include "model/FileManager.h"
 
 class DocumentModel: public QObject
 {
     Q_OBJECT
 private:
-    QTextDocument* m_doc;
+    mDocument m_doc;
+    FileManager* fileMgr;
 
 public:
     DocumentModel(QObject* parent = nullptr);
     ~DocumentModel(){};
 
-    void updateDocument(QTextDocument* doc);
-    void onSave(QTextDocument* doc);
+    void updateDocument(mDocument doc);
+    void onSave(mDocument doc);
     QTextDocument* onOpen();
     bool isNull();
     void requestNewEditor(QTextDocument* doc);
