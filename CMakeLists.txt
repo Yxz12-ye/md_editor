@@ -16,3 +16,5 @@ endif()
 include(${CMAKE_SOURCE_DIR}/3rd-party/ElaWidgetTools/lib/cmake/ElaWidgetToolsConfig.cmake)
 
 add_subdirectory(./app)
+
+add_subdirectory(./test/cmark-gfm_test)
