@@ -1,11 +1,10 @@
 #pragma once
 
-#include <QObject>
 #include <QSyntaxHighlighter>
-#include <QTextFormat>
-#include <QHash>
+#include <QTextCharFormat>
+#include <QRegularExpression>
 
-enum highlightType{
+enum highlightType {
     Title_1,
     Title_2,
     Title_3,
@@ -18,17 +17,32 @@ enum highlightType{
     Link
 };
 
-class SyntaxHighlighter: public QSyntaxHighlighter
+enum BlockState {
+    NormalState = -1,
+    CodeBlockState = 1
+};
+
+class SyntaxHighlighter : public QSyntaxHighlighter
 {
     Q_OBJECT
-private:
-    QHash<highlightType,QTextCharFormat> a;
 
 public:
-    SyntaxHighlighter(QTextDocument* m_document);
-    ~SyntaxHighlighter(){};
+    explicit SyntaxHighlighter(QTextDocument *parent = nullptr);
 
 protected:
-    // 处理文本, text是单行文本, 处理一整个输入时会调用多次
-    void highlightBlock(const QString &text) override; 
+    void highlightBlock(const QString &text) override;
+
+private:
+    QTextCharFormat a[10]; // 根据highlightType的数量调整
+    
+    void initFormats();
+    void highlightTitles(const QString &text);
+    void highlightCitation(const QString &text);
+    void highlightInlineCode(const QString &text);
+    void highlightBoldAndItalic(const QString &text);
+    void highlightLinks(const QString &text);
+    void highlightCodeBlock(const QString &text, int previousState);
+    
+    bool isInInlineCode(const QString &text, int pos);
+    bool isInBoldRange(int pos, const QList<QPair<int, int>> &boldRanges);
 };
