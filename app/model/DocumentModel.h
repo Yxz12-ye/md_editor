@@ -17,8 +17,8 @@ public:
     ~DocumentModel(){};
 
     void updateDocument(mDocument doc);
-    void onSave(mDocument doc);
-    QTextDocument* onOpen();
+    void onSave(mDocument& doc);
+    mDocument onOpen();
     bool isNull();
     void requestNewEditor(QTextDocument* doc);
 

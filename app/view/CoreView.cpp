@@ -53,14 +53,21 @@ void CoreView::addNewEditorTab(mDocument doc)
     widget->updataSize(startSize);
 }
 
-mDocument CoreView::getCurrentDocument()
+mDocument& CoreView::getCurrentDocument()
 {
     auto p = pageContiner->currentWidget();
     EditorView* m = qobject_cast<EditorView*>(p);
     if(m){
         return m->m_document;
     }
-    return mDocument();
+    static mDocument emptyDoc;
+    return emptyDoc;
+}
+
+void CoreView::updateCurrentTabName(const QString &name)
+{
+    int index = pageContiner->currentIndex();
+    pageContiner->setTabText(index, name);
 }
 
 void CoreView::newFile()

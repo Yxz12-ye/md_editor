@@ -22,5 +22,5 @@ public:
      *          另存为同样也需要
      */
     mDocument openFile();
-    bool saveFile(mDocument doc);
+    bool saveFile(mDocument& doc);
 };

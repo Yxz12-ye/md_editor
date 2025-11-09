@@ -11,14 +11,14 @@ void DocumentModel::updateDocument(mDocument doc)
     m_doc = doc;
 }
 
-void DocumentModel::onSave(mDocument doc)
+void DocumentModel::onSave(mDocument& doc)
 {
     fileMgr->saveFile(doc);
 }
 
-QTextDocument *DocumentModel::onOpen()
+mDocument DocumentModel::onOpen()
 {
-    return nullptr;
+    return fileMgr->openFile();
 }
 
 bool DocumentModel::isNull()

@@ -13,12 +13,27 @@
                 "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_USE_VCPKG": true
             }
+        },
+        {
+            "name": "Windows-Debug-MSVC",
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_TOOLCHAIN_FILE": "",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_USE_VCPKG": true
+            }
         }
     ],
     "buildPresets": [
         {
             "name": "Ninja-Clang",
             "configurePreset": "Windows-Debug-Vcpkg"
+        },
+        {
+            "name": "Ninja-msvc",
+            "configurePreset": "Windows-Debug-MSVC"
         }
     ]
 }

@@ -15,14 +15,24 @@ EditorPresenter::EditorPresenter(QObject *parent, CoreView *coreView)
 
 void EditorPresenter::requestSave()
 {
-    auto currentDocument = m_coreView->getCurrentDocument();
+    mDocument& currentDocument = m_coreView->getCurrentDocument();
+    QString prevFileName = currentDocument.path;
     if (currentDocument.doc_ptr){
         documentModel->onSave(currentDocument);
+    }
+    if (prevFileName != currentDocument.path){
+        m_coreView->updateCurrentTabName(QUrl(currentDocument.path).fileName());
     }
 }
 
 void EditorPresenter::requestOpen()
 {
+    qDebug()<<"Open File required";
+    mDocument openedDoc = documentModel->onOpen();
+    if (openedDoc.doc_ptr){
+        m_coreView->addNewEditorTab(openedDoc);
+        qDebug()<< openedDoc.doc_ptr->toPlainText();
+    }
 }
 
 void EditorPresenter::requestNew()

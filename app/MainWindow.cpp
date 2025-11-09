@@ -4,11 +4,14 @@ void MainWindow::initMenu()
 {
     menuBar = new ElaMenuBar(this);
     fileMenu = new ElaMenu(tr("File"), this);
+
     auto newFile_action = new QAction(tr("New File"));
+    auto openFile_action = new QAction(tr("Open File"));
     auto save_action = new QAction(tr("Save"));
     auto save_as_action = new QAction(tr("Save As"));
 
     actionList.append(newFile_action);
+    actionList.append(openFile_action);
     actionList.append(save_action);
     actionList.append(save_as_action);
 
@@ -33,7 +36,8 @@ void MainWindow::initContent()
 void MainWindow::initConnection()
 {
     connect(actionList[0], &QAction::triggered, editorPresenter, &EditorPresenter::requestNew);
-    connect(actionList[1], &QAction::triggered, editorPresenter, &EditorPresenter::requestSave);
+    connect(actionList[1], &QAction::triggered, editorPresenter, &EditorPresenter::requestOpen);
+    connect(actionList[2], &QAction::triggered, editorPresenter, &EditorPresenter::requestSave);
     // connect(actionList[2], &QAction::triggered, editorPresenter, &EditorPresenter::requestSaveAs);
 }
 

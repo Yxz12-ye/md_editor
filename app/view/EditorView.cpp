@@ -11,15 +11,18 @@ EditorView::EditorView(QWidget *parent, mDocument doc)
 {
     splitter = new QSplitter(this);
     editArea = new ElaPlainTextEdit(this);
-    preview = new PreviewView(this);
+    // preview = new PreviewView(this);
     if(doc.doc_ptr){
         editArea->setDocument(doc.doc_ptr);
         document = doc.doc_ptr;
+        qDebug() << editArea->document()->toPlainText();
     }
     else{
         document = editArea->document();
+        doc.doc_ptr = document;
     }
     m_document = doc;
+    editArea->repaint();
     initConnection();
 }
 
