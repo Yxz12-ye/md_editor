@@ -31,7 +31,6 @@ void EditorPresenter::requestOpen()
     mDocument openedDoc = documentModel->onOpen();
     if (openedDoc.doc_ptr){
         m_coreView->addNewEditorTab(openedDoc);
-        qDebug()<< openedDoc.doc_ptr->toPlainText();
     }
 }
 
