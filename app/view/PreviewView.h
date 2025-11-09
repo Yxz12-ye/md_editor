@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include "BaseView.h"
+#include <QtWebView>
 
 class PreviewView: public BaseView
 {

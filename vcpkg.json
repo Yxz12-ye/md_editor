@@ -1,5 +1,6 @@
 {
   "dependencies": [
-    "cmark-gfm"
+    "cmark-gfm",
+    "webview2"
   ]
 }

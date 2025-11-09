@@ -18,3 +18,5 @@ include(${CMAKE_SOURCE_DIR}/3rd-party/ElaWidgetTools/lib/cmake/ElaWidgetToolsCon
 add_subdirectory(./app)
 
 add_subdirectory(./test/cmark-gfm_test)
+
+add_subdirectory(./test/webview2_test)
