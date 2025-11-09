@@ -2,6 +2,8 @@
 
 #include <QObject>
 #include <QSyntaxHighlighter>
+#include <QTextFormat>
+#include <QHash>
 
 enum highlightType{
     Title_1,
@@ -10,19 +12,20 @@ enum highlightType{
     Title_4,
     lineCodeBlock,
     codeBlock,
-    Blod,
+    Bold,
     Italic,
-    Formula
+    Cited,
+    Link
 };
 
 class SyntaxHighlighter: public QSyntaxHighlighter
 {
     Q_OBJECT
 private:
-    QHash<highlightType,QTextFormat> a;
+    QHash<highlightType,QTextCharFormat> a;
 
 public:
-    SyntaxHighlighter(QTextDocument* parent);
+    SyntaxHighlighter(QTextDocument* m_document);
     ~SyntaxHighlighter(){};
 
 protected:

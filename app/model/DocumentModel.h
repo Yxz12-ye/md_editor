@@ -4,6 +4,7 @@
 #include <QTextDocument>
 #include "model/tool.h"
 #include "model/FileManager.h"
+#include "model/SyntaxHighlighter.h"
 
 class DocumentModel: public QObject
 {
@@ -11,6 +12,7 @@ class DocumentModel: public QObject
 private:
     mDocument m_doc;
     FileManager* fileMgr;
+    SyntaxHighlighter* highlighter;
 
 public:
     DocumentModel(QObject* parent = nullptr);

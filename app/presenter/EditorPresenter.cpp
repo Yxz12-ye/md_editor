@@ -11,6 +11,7 @@ EditorPresenter::EditorPresenter(QObject *parent, CoreView *coreView)
       m_coreView(coreView)
 {
     documentModel = new DocumentModel(this);
+    initConnection();
 }
 
 void EditorPresenter::requestSave()
