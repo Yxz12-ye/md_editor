@@ -1,244 +1,303 @@
 #include "SyntaxHighlighter.h"
 
-SyntaxHighlighter::SyntaxHighlighter(QTextDocument *m_document)
-    : QSyntaxHighlighter(m_document)
+SyntaxHighlighter::SyntaxHighlighter(QTextDocument *document)
+    : QSyntaxHighlighter(document)
 {
-    // 初始化所有格式
     initFormats();
+    
+    // 初始化正则表达式
+    m_linkRegex = QRegularExpression(R"(\[([^\]]+)\]\(([^\)]+)\))");
+    m_linkRegex.optimize();
 }
 
 void SyntaxHighlighter::initFormats()
 {
-    // 一级标题格式
-    a[Title_1] = QTextCharFormat();
-    a[Title_1].setFontPointSize(24.0);
-    a[Title_1].setFontWeight(QFont::Bold);
-    a[Title_1].setForeground(QBrush(QColor("#D94F8A")));
+    // 一级标题
+    QTextCharFormat title1Format;
+    title1Format.setFontPointSize(24.0);
+    title1Format.setFontWeight(QFont::Bold);
+    title1Format.setForeground(QColor("#D94F8A"));
+    m_formats[HighlightType::Title1] = title1Format;
 
-    // 二级标题格式
-    a[Title_2] = QTextCharFormat();
-    a[Title_2].setFontPointSize(20.0);
-    a[Title_2].setFontWeight(QFont::Bold);
-    a[Title_2].setForeground(QBrush(QColor("#D94F8A")));
+    // 二级标题
+    QTextCharFormat title2Format;
+    title2Format.setFontPointSize(20.0);
+    title2Format.setFontWeight(QFont::Bold);
+    title2Format.setForeground(QColor("#D94F8A"));
+    m_formats[HighlightType::Title2] = title2Format;
 
-    // 三级标题格式
-    a[Title_3] = QTextCharFormat();
-    a[Title_3].setFontPointSize(18.0);
-    a[Title_3].setFontWeight(QFont::Bold);
-    a[Title_3].setForeground(QBrush(QColor("#D94F8A")));
+    // 三级标题
+    QTextCharFormat title3Format;
+    title3Format.setFontPointSize(18.0);
+    title3Format.setFontWeight(QFont::Bold);
+    title3Format.setForeground(QColor("#D94F8A"));
+    m_formats[HighlightType::Title3] = title3Format;
 
-    // 四级标题格式
-    a[Title_4] = QTextCharFormat();
-    a[Title_4].setFontPointSize(16.0);
-    a[Title_4].setFontWeight(QFont::Bold);
-    a[Title_4].setForeground(QBrush(QColor("#D94F8A")));
+    // 四级标题
+    QTextCharFormat title4Format;
+    title4Format.setFontPointSize(16.0);
+    title4Format.setFontWeight(QFont::Bold);
+    title4Format.setForeground(QColor("#D94F8A"));
+    m_formats[HighlightType::Title4] = title4Format;
 
-    // 行内代码格式
-    a[lineCodeBlock] = QTextCharFormat();
-    a[lineCodeBlock].setFontFamily("Courier New");
-    a[lineCodeBlock].setBackground(QBrush(QColor("#F5F5F5")));
-    a[lineCodeBlock].setForeground(QBrush(QColor("#434CF4")));
+    // 行内代码
+    QTextCharFormat inlineCodeFormat;
+    inlineCodeFormat.setFontFamily("Courier New");
+    inlineCodeFormat.setBackground(QColor("#F5F5F5"));
+    inlineCodeFormat.setForeground(QColor("#434CF4"));
+    m_formats[HighlightType::InlineCode] = inlineCodeFormat;
 
-    // 代码块格式
-    a[codeBlock] = QTextCharFormat();
-    a[codeBlock].setFontFamily("Courier New");
-    a[codeBlock].setBackground(QBrush(QColor("#F5F5F5")));
-    a[codeBlock].setForeground(QBrush(QColor("#434CF4")));
+    // 代码块
+    QTextCharFormat codeBlockFormat;
+    codeBlockFormat.setFontFamily("Courier New");
+    codeBlockFormat.setBackground(QColor("#F5F5F5"));
+    codeBlockFormat.setForeground(QColor("#434CF4"));
+    m_formats[HighlightType::CodeBlock] = codeBlockFormat;
 
-    // 加粗格式
-    a[Bold] = QTextCharFormat();
-    a[Bold].setFontWeight(QFont::Bold);
-    a[Bold].setForeground(QBrush(QColor("#2C3E50")));
+    // 加粗
+    QTextCharFormat boldFormat;
+    boldFormat.setFontWeight(QFont::Bold);
+    boldFormat.setForeground(QColor("#2C3E50"));
+    m_formats[HighlightType::Bold] = boldFormat;
 
-    // 斜体格式
-    a[Italic] = QTextCharFormat();
-    a[Italic].setFontItalic(true);
-    a[Italic].setForeground(QBrush(QColor("#7F8C8D")));
+    // 斜体
+    QTextCharFormat italicFormat;
+    italicFormat.setFontItalic(true);
+    italicFormat.setForeground(QColor("#7F8C8D"));
+    m_formats[HighlightType::Italic] = italicFormat;
 
-    // 引用格式
-    a[Cited] = QTextCharFormat();
-    a[Cited].setForeground(QBrush(QColor("#6A9955")));
-    a[Cited].setFontItalic(true);
+    // 引用
+    QTextCharFormat quoteFormat;
+    quoteFormat.setForeground(QColor("#6A9955"));
+    quoteFormat.setFontItalic(true);
+    m_formats[HighlightType::Quote] = quoteFormat;
 
-    // 链接格式
-    a[Link] = QTextCharFormat();
-    a[Link].setForeground(QBrush(QColor("#3498DB")));
-    a[Link].setUnderlineStyle(QTextCharFormat::SingleUnderline);
+    // 链接
+    QTextCharFormat linkFormat;
+    linkFormat.setForeground(QColor("#3498DB"));
+    linkFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
+    m_formats[HighlightType::Link] = linkFormat;
 }
 
 void SyntaxHighlighter::highlightBlock(const QString &text)
 {
-    // 保存当前块状态
-    int previousState = previousBlockState();
-    
-    // 处理代码块（多行状态）
-    highlightCodeBlock(text, previousState);
-    
-    // 如果当前在代码块中，不处理其他语法
-    if (currentBlockState() == CodeBlockState) {
+    if (text.isEmpty()) {
+        setCurrentBlockState(static_cast<int>(BlockState::Normal));
         return;
     }
+
+    // 1. 首先处理代码块（优先级最高）
+    highlightCodeBlock(text);
     
-    // 处理标题
-    highlightTitles(text);
-    
-    // 处理引用
-    highlightCitation(text);
-    
-    // 处理行内元素（需要注意顺序）
-    highlightLinks(text);
-    highlightInlineCode(text);
-    highlightBoldAndItalic(text);
+    // 如果在代码块中，不处理其他语法
+    if (currentBlockState() == static_cast<int>(BlockState::InCodeBlock)) {
+        return;
+    }
+
+    // 初始化占用信息
+    HighlightInfo info;
+    info.init(text.length());
+
+    // 2. 处理标题（块级元素）
+    highlightTitles(text, info);
+
+    // 3. 处理引用（块级元素）
+    highlightQuote(text, info);
+
+    // 4. 处理行内代码（行内元素，优先级高）
+    highlightInlineCode(text, info);
+
+    // 5. 处理链接
+    highlightLinks(text, info);
+
+    // 6. 处理加粗和斜体（最后处理，优先级最低）
+    highlightBoldAndItalic(text, info);
 }
 
-void SyntaxHighlighter::highlightTitles(const QString &text)
+void SyntaxHighlighter::highlightCodeBlock(const QString &text)
 {
-    // 简单的基于行首字符来判断标题等级
-    if (text.startsWith("# ")) {
-        setFormat(0, text.length(), a[Title_1]);
-    } else if (text.startsWith("## ")) {
-        setFormat(0, text.length(), a[Title_2]);
-    } else if (text.startsWith("### ")) {
-        setFormat(0, text.length(), a[Title_3]);
-    } else if (text.startsWith("#### ")) {
-        setFormat(0, text.length(), a[Title_4]);
+    const QString codeBlockMarker = "```";
+    BlockState prevState = static_cast<BlockState>(previousBlockState());
+    
+    bool startsWithMarker = text.startsWith(codeBlockMarker);
+    
+    if (prevState == BlockState::InCodeBlock) {
+        // 当前在代码块中
+        setFormat(0, text.length(), m_formats[HighlightType::CodeBlock]);
+        
+        // 检查是否是代码块结束
+        if (startsWithMarker || text.trimmed() == codeBlockMarker) {
+            setCurrentBlockState(static_cast<int>(BlockState::Normal));
+        } else {
+            setCurrentBlockState(static_cast<int>(BlockState::InCodeBlock));
+        }
+    } else if (startsWithMarker) {
+        // 代码块开始
+        setFormat(0, text.length(), m_formats[HighlightType::CodeBlock]);
+        setCurrentBlockState(static_cast<int>(BlockState::InCodeBlock));
+    } else {
+        setCurrentBlockState(static_cast<int>(BlockState::Normal));
     }
 }
 
-void SyntaxHighlighter::highlightCitation(const QString &text)
+void SyntaxHighlighter::highlightTitles(const QString &text, HighlightInfo &info)
 {
-    if (text.startsWith(">")) {
-        setFormat(0, text.length(), a[Cited]);
+    // 标题必须在行首
+    if (text.isEmpty() || text[0] != '#') {
+        return;
     }
-}
 
-void SyntaxHighlighter::highlightInlineCode(const QString &text)
-{
-    // 行内代码使用反引号包裹，排除代码块的情况
-    int start = 0;
-    while ((start = text.indexOf('`', start)) != -1) {
-        // 检查是否是代码块的开头（三个反引号）
-        if (text.mid(start, 3) == "```") {
-            start += 3;
-            continue;
+    // 计算标题级别
+    int level = 0;
+    int pos = 0;
+    while (pos < text.length() && text[pos] == '#' && level < 6) {
+        ++level;
+        ++pos;
+    }
+
+    // 标题后必须跟空格
+    if (pos < text.length() && text[pos] == ' ') {
+        HighlightType type;
+        switch (level) {
+            case 1: type = HighlightType::Title1; break;
+            case 2: type = HighlightType::Title2; break;
+            case 3: type = HighlightType::Title3; break;
+            case 4: type = HighlightType::Title4; break;
+            default: return;
         }
         
+        applyFormat(0, text.length(), type, info);
+    }
+}
+
+void SyntaxHighlighter::highlightQuote(const QString &text, HighlightInfo &info)
+{
+    if (text.startsWith('>') && !info.isOccupied(0, text.length())) {
+        applyFormat(0, text.length(), HighlightType::Quote, info);
+    }
+}
+
+void SyntaxHighlighter::highlightInlineCode(const QString &text, HighlightInfo &info)
+{
+    int pos = 0;
+    const int length = text.length();
+    
+    while (pos < length) {
+        // 查找反引号
+        int start = text.indexOf('`', pos);
+        if (start == -1) {
+            break;
+        }
+
+        // 跳过代码块标记
+        if (start + 2 < length && text[start + 1] == '`' && text[start + 2] == '`') {
+            pos = start + 3;
+            continue;
+        }
+
+        // 查找匹配的反引号
         int end = text.indexOf('`', start + 1);
-        if (end != -1) {
-            setFormat(start, end - start + 1, a[lineCodeBlock]);
-            start = end + 1;
-        } else {
+        if (end == -1) {
             break;
         }
-    }
-}
 
-void SyntaxHighlighter::highlightBoldAndItalic(const QString &text)
-{
-    // 先处理加粗（**包裹），然后处理斜体（*包裹）
-    // 这样可以避免加粗内部的*被误识别为斜体
-    
-    QList<QPair<int, int>> boldRanges;
-    
-    // 先找出所有加粗的范围
-    int boldStart = 0;
-    while ((boldStart = text.indexOf("**", boldStart)) != -1) {
-        int boldEnd = text.indexOf("**", boldStart + 2);
-        if (boldEnd != -1) {
-            // 检查这不是在行内代码中
-            if (!isInInlineCode(text, boldStart)) {
-                boldRanges.append(qMakePair(boldStart, boldEnd + 2));
-                setFormat(boldStart, boldEnd - boldStart + 2, a[Bold]);
-            }
-            boldStart = boldEnd + 2;
-        } else {
-            break;
-        }
-    }
-    
-    // 然后处理斜体，排除加粗范围内的内容
-    int italicStart = 0;
-    while ((italicStart = text.indexOf('*', italicStart)) != -1) {
-        // 跳过加粗标记
-        if (text.mid(italicStart, 2) == "**") {
-            italicStart += 2;
-            continue;
+        // 检查是否已被占用
+        int codeLength = end - start + 1;
+        if (!info.isOccupied(start, codeLength)) {
+            applyFormat(start, codeLength, HighlightType::InlineCode, info);
         }
         
-        int italicEnd = text.indexOf('*', italicStart + 1);
-        if (italicEnd != -1) {
-            // 检查不在加粗范围内且不在行内代码中
-            if (!isInBoldRange(italicStart, boldRanges) && !isInInlineCode(text, italicStart)) {
-                setFormat(italicStart, italicEnd - italicStart + 1, a[Italic]);
-            }
-            italicStart = italicEnd + 1;
-        } else {
-            break;
-        }
+        pos = end + 1;
     }
 }
 
-void SyntaxHighlighter::highlightLinks(const QString &text)
+void SyntaxHighlighter::highlightLinks(const QString &text, HighlightInfo &info)
 {
-    // 链接格式: [文本](URL)
-    QRegularExpression linkRegex("\\[([^\\]]+)\\]\\(([^\\)]+)\\)");
-    QRegularExpressionMatchIterator matches = linkRegex.globalMatch(text);
+    QRegularExpressionMatchIterator it = m_linkRegex.globalMatch(text);
     
-    while (matches.hasNext()) {
-        QRegularExpressionMatch match = matches.next();
+    while (it.hasNext()) {
+        QRegularExpressionMatch match = it.next();
         int start = match.capturedStart();
         int length = match.capturedLength();
         
-        // 检查不在代码块或行内代码中
-        if (!isInInlineCode(text, start)) {
-            setFormat(start, length, a[Link]);
+        if (!info.isOccupied(start, length)) {
+            applyFormat(start, length, HighlightType::Link, info);
         }
     }
 }
 
-void SyntaxHighlighter::highlightCodeBlock(const QString &text, int previousState)
+void SyntaxHighlighter::highlightBoldAndItalic(const QString &text, HighlightInfo &info)
 {
-    bool isCodeBlockStart = text.startsWith("```");
-    bool isCodeBlockEnd = text.contains("```") && previousState == CodeBlockState;
+    const int length = text.length();
     
-    if (previousState == CodeBlockState) {
-        // 当前在代码块中
-        setFormat(0, text.length(), a[codeBlock]);
+    // 一次遍历处理所有加粗和斜体
+    int pos = 0;
+    
+    while (pos < length) {
+        if (text[pos] != '*') {
+            ++pos;
+            continue;
+        }
         
-        if (isCodeBlockEnd) {
-            // 代码块结束
-            setCurrentBlockState(NormalState);
+        // 检查是否已被占用
+        if (info.occupied[pos]) {
+            ++pos;
+            continue;
+        }
+        
+        // 检查是否是加粗 (**)
+        if (pos + 1 < length && text[pos + 1] == '*') {
+            // 查找匹配的 **
+            int end = pos + 2;
+            while (end + 1 < length) {
+                if (text[end] == '*' && text[end + 1] == '*') {
+                    // 找到匹配的 **
+                    if (!info.occupied[end] && !info.occupied[end + 1]) {
+                        int boldLength = end - pos + 2;
+                        applyFormat(pos, boldLength, HighlightType::Bold, info);
+                        pos = end + 2;
+                        break;
+                    }
+                }
+                ++end;
+            }
+            if (end + 1 >= length) {
+                pos += 2; // 没找到匹配，跳过
+            }
         } else {
-            // 继续代码块
-            setCurrentBlockState(CodeBlockState);
+            // 处理斜体 (*)
+            // 查找匹配的 *
+            int end = pos + 1;
+            while (end < length) {
+                if (text[end] == '*') {
+                    // 确保不是 ** 的一部分
+                    bool isPart = false;
+                    if (end + 1 < length && text[end + 1] == '*') {
+                        isPart = true;
+                    }
+                    if (end > 0 && text[end - 1] == '*') {
+                        isPart = true;
+                    }
+                    
+                    if (!isPart && !info.occupied[end]) {
+                        int italicLength = end - pos + 1;
+                        applyFormat(pos, italicLength, HighlightType::Italic, info);
+                        pos = end + 1;
+                        break;
+                    }
+                }
+                ++end;
+            }
+            if (end >= length) {
+                ++pos; // 没找到匹配，继续
+            }
         }
-    } else if (isCodeBlockStart) {
-        // 代码块开始
-        setFormat(0, text.length(), a[codeBlock]);
-        setCurrentBlockState(CodeBlockState);
-    } else {
-        setCurrentBlockState(NormalState);
     }
 }
 
-bool SyntaxHighlighter::isInInlineCode(const QString &text, int pos)
+void SyntaxHighlighter::applyFormat(int start, int length, HighlightType type, 
+                                   HighlightInfo &info)
 {
-    // 检查位置是否在行内代码中
-    int backtickCount = 0;
-    for (int i = 0; i < pos; ++i) {
-        if (text[i] == '`') {
-            backtickCount++;
-        }
-    }
-    return (backtickCount % 2 == 1);
-}
-
-bool SyntaxHighlighter::isInBoldRange(int pos, const QList<QPair<int, int>> &boldRanges)
-{
-    for (const auto &range : boldRanges) {
-        if (pos >= range.first && pos <= range.second) {
-            return true;
-        }
-    }
-    return false;
+    setFormat(start, length, m_formats[type]);
+    info.markOccupied(start, length);
 }
