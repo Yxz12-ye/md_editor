@@ -4,6 +4,7 @@ DocumentModel::DocumentModel(QObject *parent) : QObject(parent)
 {
     highlighter = new SyntaxHighlighter(nullptr);
     fileMgr = new FileManager(this);
+    mdParser = new MarkdownParser();
 }
 
 void DocumentModel::updateDocument(mDocument doc)

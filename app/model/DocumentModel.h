@@ -5,6 +5,7 @@
 #include "model/tool.h"
 #include "model/FileManager.h"
 #include "model/SyntaxHighlighter.h"
+#include "model/MarkdownParser.h"
 
 class DocumentModel: public QObject
 {
@@ -13,6 +14,7 @@ private:
     mDocument m_doc;
     FileManager* fileMgr;
     SyntaxHighlighter* highlighter;
+    MarkdownParser* mdParser;
 
 public:
     DocumentModel(QObject* parent = nullptr);

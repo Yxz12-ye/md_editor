@@ -14,8 +14,16 @@ void CoreView::initConnection()
 
 CoreView::CoreView(QWidget *parent) : BaseView(parent)
 {
-    pageContiner = new ElaTabWidget(this);
+    splitter = new QSplitter(this);
+    pageContiner = new ElaTabWidget(splitter);
+    previewView = new PreviewView(splitter);
+    splitter->addWidget(pageContiner);
+    splitter->addWidget(previewView);
+    splitter->setStretchFactor(0, 3);
+    splitter->setStretchFactor(1, 1);
     initConnection();
+    this->setWidget(splitter);
+    initComplete = true;
 }
 
 void CoreView::addNewTab(QWidget *widget, const QString &title)
@@ -50,6 +58,10 @@ void CoreView::addNewEditorTab(mDocument doc)
         addNewTab(widget, tr("*New File"));
     }
     connect(this, &CoreView::updateEditorSize, widget, &EditorView::updataSize);
+    connect(widget, &EditorView::mtextChanged, this, [=](const QString& newText){
+        qDebug()<<"Editor text changed, length:"<<newText.length();
+        emit ctextChanged(newText);
+    });
     widget->updataSize(startSize);
 }
 

@@ -58,7 +58,8 @@ HRESULT MainWindow::OnControllerCompleted(HRESULT result, ICoreWebView2Controlle
 
 
     //定义窗口
-    RECT rect = {0, 0, this->width(), this->height()};
+    qreal dpiScale = this->devicePixelRatioF(); // 支持DPI缩放
+    RECT rect = {0, 0, static_cast<LONG>(this->width() * dpiScale), static_cast<LONG>(this->height() * dpiScale)};
     m_webViewController->put_Bounds(rect);
 
 

@@ -12,9 +12,7 @@ class EditorView : public BaseView
 {
     Q_OBJECT
 private:
-    QSplitter* splitter;
     ElaPlainTextEdit* editArea;
-    PreviewView* preview;
 
     void initConnection();
     
@@ -27,5 +25,7 @@ public:
 
     void updataSize(const QSize& size);
     
+signals:
+    void mtextChanged(const QString& newText);
 };
 

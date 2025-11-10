@@ -3,6 +3,7 @@ project(app VERSION 0.1.0 LANGUAGES C CXX)
 
 find_package(cmark-gfm CONFIG REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets WebView)
+find_package(unofficial-webview2 CONFIG REQUIRED)
 message(${ElaWidgetTools_LIBRARIES})
 
 add_executable(app ./main.cpp)
@@ -42,4 +43,5 @@ target_link_libraries(app PRIVATE
     Qt6::Widgets
     Qt6::WebView
     ${ElaWidgetTools_LIBRARY_DIRS}/${ElaWidgetTools_LIBRARIES}.lib
+    unofficial::webview2::webview2
 )

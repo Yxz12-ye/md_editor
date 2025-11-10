@@ -53,8 +53,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     ElaWindow::resizeEvent(event);
     QSize adjustedSize = event->size();
     adjustedSize.setHeight(adjustedSize.height() - 75);
-    if(page){
-        page->resize(adjustedSize);  // 或者使用 resize()
+    if(page->initComplete){
+        page->splitter->resize(adjustedSize);  // 或者使用 resize()
         page->updataSize(adjustedSize);
     }
     return;
