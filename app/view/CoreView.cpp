@@ -22,7 +22,6 @@ CoreView::CoreView(QWidget *parent) : BaseView(parent)
     splitter->setStretchFactor(0, 3);
     splitter->setStretchFactor(1, 1);
     initConnection();
-    this->setWidget(splitter);
     initComplete = true;
 }
 

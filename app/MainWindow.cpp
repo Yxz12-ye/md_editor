@@ -55,6 +55,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     adjustedSize.setHeight(adjustedSize.height() - 75);
     if(page->initComplete){
         page->splitter->resize(adjustedSize);  // 或者使用 resize()
+        page->resize(adjustedSize);
         page->updataSize(adjustedSize);
     }
     return;
