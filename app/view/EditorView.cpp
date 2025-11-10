@@ -33,15 +33,14 @@ EditorView::EditorView(QWidget *parent, mDocument doc)
 
     // 设置编辑区最小宽度
     editArea->setMinimumWidth(500);
-
+    
     initConnection();
 }
 
-void EditorView::updataSize(const QSize &size)
+void EditorView::resizeEvent(QResizeEvent *event)
 {
-    QSize adjustedSize = size;
-    adjustedSize.setHeight(adjustedSize.height() - 40);
     if (editArea){
-        editArea->resize(adjustedSize);
+        editArea->resize(event->size());
     }
+    BaseView::resizeEvent(event);
 }

@@ -28,7 +28,6 @@ public:
     bool initComplete = false;
 
     void addNewTab(QWidget* widget, const QString& title); // 添加页面接口
-    void updataSize(const QSize& size);
     void addWelcomeTab();
     void addNewEditorTab(mDocument doc);
     mDocument& getCurrentDocument();

@@ -21,6 +21,7 @@ CoreView::CoreView(QWidget *parent) : BaseView(parent)
     splitter->addWidget(previewView);
     splitter->setStretchFactor(0, 3);
     splitter->setStretchFactor(1, 1);
+    pageContiner->setMinimumWidth(500);
     initConnection();
     initComplete = true;
 }
@@ -28,13 +29,6 @@ CoreView::CoreView(QWidget *parent) : BaseView(parent)
 void CoreView::addNewTab(QWidget *widget, const QString &title)
 {
     pageContiner->addTab(widget, title);
-}
-
-void CoreView::updataSize(const QSize &size)
-{
-    startSize = size;
-    pageContiner->resize(size);
-    emit updateEditorSize(size);
 }
 
 void CoreView::addWelcomeTab()
@@ -56,12 +50,10 @@ void CoreView::addNewEditorTab(mDocument doc)
     else{
         addNewTab(widget, tr("*New File"));
     }
-    connect(this, &CoreView::updateEditorSize, widget, &EditorView::updataSize);
     connect(widget, &EditorView::mtextChanged, this, [=](const QString& newText){
         qDebug()<<"Editor text changed, length:"<<newText.length();
         emit ctextChanged(newText);
     });
-    widget->updataSize(startSize);
 }
 
 mDocument& CoreView::getCurrentDocument()

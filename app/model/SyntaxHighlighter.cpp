@@ -81,10 +81,10 @@ void SyntaxHighlighter::initFormats()
 
 void SyntaxHighlighter::highlightBlock(const QString &text)
 {
-    if (text.isEmpty()) {
-        setCurrentBlockState(static_cast<int>(BlockState::Normal));
-        return;
-    }
+    // if (text.isEmpty()) {
+    //     setCurrentBlockState(static_cast<int>(BlockState::Normal));
+    //     return;
+    // }
 
     // 1. 首先处理代码块（优先级最高）
     highlightCodeBlock(text);
@@ -125,10 +125,11 @@ void SyntaxHighlighter::highlightCodeBlock(const QString &text)
         // 当前在代码块中
         setFormat(0, text.length(), m_formats[HighlightType::CodeBlock]);
         
-        // 检查是否是代码块结束
-        if (startsWithMarker || text.trimmed() == codeBlockMarker) {
+        // 只有当行首是 ``` 时才结束代码块
+        if (startsWithMarker) {
             setCurrentBlockState(static_cast<int>(BlockState::Normal));
         } else {
+            // 继续代码块状态（包括空行）
             setCurrentBlockState(static_cast<int>(BlockState::InCodeBlock));
         }
     } else if (startsWithMarker) {

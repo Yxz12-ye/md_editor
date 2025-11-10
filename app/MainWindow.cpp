@@ -29,7 +29,6 @@ void MainWindow::initContent()
     page->addWelcomeTab();
     page->addNewEditorTab(mDocument());// 临时
     page->setMinimumSize(this->size());
-    page->updataSize(this->size());
     this->setCentralCustomWidget(page);
 }
 
@@ -56,7 +55,6 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     if(page->initComplete){
         page->splitter->resize(adjustedSize);  // 或者使用 resize()
         page->resize(adjustedSize);
-        page->updataSize(adjustedSize);
     }
     return;
 }

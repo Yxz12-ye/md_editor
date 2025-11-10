@@ -23,7 +23,8 @@ public:
     QTextDocument* document;
     mDocument m_document;
 
-    void updataSize(const QSize& size);
+protected:
+    void resizeEvent(QResizeEvent* event) override;
     
 signals:
     void mtextChanged(const QString& newText);
