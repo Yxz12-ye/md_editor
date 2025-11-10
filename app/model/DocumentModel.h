@@ -26,6 +26,6 @@ public:
     bool isNull();
     void requestNewEditor(QTextDocument* doc);
 
-private slots:
-    void onTextUpdate();
+    std::string& requestParser(const QString& markdownText);
+
 };

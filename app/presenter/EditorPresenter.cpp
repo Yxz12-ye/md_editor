@@ -4,6 +4,7 @@ void EditorPresenter::initConnection()
 {
     // 当活动的Editor改变时会发射该信号, 并传递改变后的EditorView
     connect(m_coreView, &CoreView::editorChanged, this, &EditorPresenter::onEditorChanged);
+    connect(m_coreView, &CoreView::ctextChanged, this, &EditorPresenter::onCtextChanged);
 }
 
 EditorPresenter::EditorPresenter(QObject *parent, CoreView *coreView)
@@ -51,6 +52,12 @@ void EditorPresenter::requestSaveAs(QTextDocument *doc)
 
 void EditorPresenter::updateHighlight(int line)
 {
+}
+
+void EditorPresenter::onCtextChanged(const QString &newText)
+{
+    std::string& html = documentModel->requestParser(newText);
+    m_coreView->updatePreview(html);
 }
 
 void EditorPresenter::onEditorChanged(EditorView* new_editor)

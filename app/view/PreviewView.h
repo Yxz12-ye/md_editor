@@ -8,6 +8,7 @@
 #include "WebView2.h"
 #include <QSize>
 #include <QResizeEvent>
+#include <Windows.h>
 
 class PreviewView: public BaseView
 {
@@ -36,6 +37,8 @@ private:
 public:
     PreviewView(QWidget* parent = nullptr);
     ~PreviewView(){};
+
+    void updateContent(const std::string& html);
 
 protected:
     void resizeEvent(QResizeEvent* event) override;

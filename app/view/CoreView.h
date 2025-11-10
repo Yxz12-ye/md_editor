@@ -42,4 +42,5 @@ public slots:
     void newFile();
     void saveFile();
     void saveAs();
+    void updatePreview(const std::string& html);
 };

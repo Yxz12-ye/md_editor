@@ -1,6 +1,6 @@
 #include "MarkdownParser.h"
 
-std::string MarkdownParser::parseToHtml(const QString &markdownText)
+std::string& MarkdownParser::parseToHtml(const QString &markdownText)
 {
     // Convert QString to std::string (UTF-8)
     std::string markdownUtf8 = markdownText.toUtf8().constData();
@@ -10,7 +10,8 @@ std::string MarkdownParser::parseToHtml(const QString &markdownText)
 
     // Render the cmark node to HTML
     char *htmlCStr = cmark_render_html(root, CMARK_OPT_DEFAULT, nullptr);
-    std::string htmlString(htmlCStr);
+    static std::string htmlString;
+    htmlString = std::string(htmlCStr);
 
     // Free allocated resources
     cmark_node_free(root);

@@ -12,6 +12,6 @@ public:
     MarkdownParser(/* args */){};
     ~MarkdownParser(){};
 
-    std::string parseToHtml(const QString &markdownText);
+    std::string& parseToHtml(const QString &markdownText);
 };
 

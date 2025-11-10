@@ -85,3 +85,8 @@ void CoreView::saveFile()
 void CoreView::saveAs()
 {
 }
+
+void CoreView::updatePreview(const std::string &html)
+{
+    previewView->updateContent(html);
+}

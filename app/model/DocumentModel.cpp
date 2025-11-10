@@ -33,6 +33,7 @@ void DocumentModel::requestNewEditor(QTextDocument *doc)
 {
 }
 
-void DocumentModel::onTextUpdate(){
-    
+std::string& DocumentModel::requestParser(const QString& markdownText){
+    std::string& html = mdParser->parseToHtml(markdownText);
+    return html;
 }

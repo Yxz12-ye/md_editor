@@ -115,6 +115,23 @@ PreviewView::PreviewView(QWidget *parent) : BaseView(parent)
     initializeWebView2();
 }
 
+void PreviewView::updateContent(const std::string &html)
+{
+    if (m_webView) {
+        // 将UTF-8字符串转换为UTF-16
+        int wideLength = MultiByteToWideChar(CP_UTF8, 0, html.c_str(), -1, nullptr, 0);
+        if (wideLength > 0) {
+            std::wstring htmlContent(wideLength, 0);
+            MultiByteToWideChar(CP_UTF8, 0, html.c_str(), -1, &htmlContent[0], wideLength);
+            // 移除末尾的null字符
+            if (!htmlContent.empty() && htmlContent.back() == L'\0') {
+                htmlContent.pop_back();
+            }
+            m_webView->NavigateToString(htmlContent.c_str());
+        }
+    }
+}
+
 void PreviewView::resizeEvent(QResizeEvent *event)
 {
     //同步webview的大小
