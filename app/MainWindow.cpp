@@ -27,7 +27,7 @@ void MainWindow::initContent()
 
     this->setIsNavigationBarEnable(false);
     page->addWelcomeTab();
-    page->addNewEditorTab(mDocument());// 临时
+    page->addNewEditorTab(mDocument()); // 临时
     page->setMinimumSize(this->size());
     this->setCentralCustomWidget(page);
 }
@@ -52,8 +52,9 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     ElaWindow::resizeEvent(event);
     QSize adjustedSize = event->size();
     adjustedSize.setHeight(adjustedSize.height() - 75);
-    if(page->initComplete){
-        page->splitter->resize(adjustedSize);  // 或者使用 resize()
+    if (page->initComplete)
+    {
+        page->splitter->resize(adjustedSize); // 或者使用 resize()
         page->resize(adjustedSize);
     }
     return;

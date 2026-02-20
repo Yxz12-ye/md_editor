@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ElaScrollArea.h>
-#include <ElaPlainTextEdit.h>
+#include "CodePlainEditor.h"
 #include "BaseView.h"
 #include <QTextBlock>
 #include "PreviewView.h"
@@ -12,7 +12,7 @@ class EditorView : public BaseView
 {
     Q_OBJECT
 private:
-    ElaPlainTextEdit* editArea;
+    CodePlainEditor* editArea;
 
     void initConnection();
     

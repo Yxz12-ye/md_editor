@@ -2,14 +2,14 @@
 
 void EditorView::initConnection()
 {
-    connect(editArea, &ElaPlainTextEdit::textChanged, this, [=]{
+    connect(editArea, &QPlainTextEdit::textChanged, this, [=]{
         emit mtextChanged(editArea->toPlainText());
     });
 }
 
 EditorView::EditorView(QWidget *parent, mDocument doc)
 {
-    editArea = new ElaPlainTextEdit(this);
+    editArea = new CodePlainEditor(this);
     
     // 永远使用编辑区自带的文档，只复制内容
     document = editArea->document();
