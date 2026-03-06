@@ -36,11 +36,13 @@ public:
 signals:
     void editorChanged(EditorView* new_editor);
     void updateEditorSize(const QSize& size);
-    void ctextChanged(const QString& newText);
+    void ctextChanged(const QString& newText, int cursorLine);
+    void cursorLineChanged(int line);
 
 public slots:
     void newFile();
     void saveFile();
     void saveAs();
-    void updatePreview(const std::string& html);
+    void updatePreview(const std::string& html, int cursorLine);
+    void updatePreviewScroll(int cursorLine);
 };

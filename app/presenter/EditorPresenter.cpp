@@ -5,6 +5,7 @@ void EditorPresenter::initConnection()
     // 当活动的Editor改变时会发射该信号, 并传递改变后的EditorView
     connect(m_coreView, &CoreView::editorChanged, this, &EditorPresenter::onEditorChanged);
     connect(m_coreView, &CoreView::ctextChanged, this, &EditorPresenter::onCtextChanged);
+    connect(m_coreView, &CoreView::cursorLineChanged, this, &EditorPresenter::onCursorLineChanged);
 }
 
 EditorPresenter::EditorPresenter(QObject *parent, CoreView *coreView)
@@ -54,10 +55,15 @@ void EditorPresenter::updateHighlight(int line)
 {
 }
 
-void EditorPresenter::onCtextChanged(const QString &newText)
+void EditorPresenter::onCtextChanged(const QString &newText, int cursorLine)
 {
-    std::string& html = documentModel->requestParser(newText);
-    m_coreView->updatePreview(html);
+    std::string html = documentModel->requestParser(newText);
+    m_coreView->updatePreview(html, cursorLine);
+}
+
+void EditorPresenter::onCursorLineChanged(int cursorLine)
+{
+    m_coreView->updatePreviewScroll(cursorLine);
 }
 
 void EditorPresenter::onEditorChanged(EditorView* new_editor)

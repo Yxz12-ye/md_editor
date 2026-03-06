@@ -27,7 +27,8 @@ public:
 
 private slots:
     void onEditorChanged(EditorView* new_editor);
-    void onCtextChanged(const QString& newText);
+    void onCtextChanged(const QString& newText, int cursorLine);
+    void onCursorLineChanged(int cursorLine);
 
 signals:
     void parsedMarkdown(const std::string& html);

@@ -2,17 +2,19 @@
 
 void CoreView::initConnection()
 {
-    connect(pageContiner, &ElaTabWidget::currentChanged, this, [=](int index){
-        qDebug()<<"page "<<index<<" clicked";
+    connect(pageContiner, &ElaTabWidget::currentChanged, this, [=](int index) {
+        qDebug() << "page " << index << " clicked";
         auto p = pageContiner->currentWidget();
         EditorView* m = qobject_cast<EditorView*>(p);
-        if(m){
+        if (m) {
             emit editorChanged(m);
+            emit ctextChanged(m->document->toPlainText(), m->cursorLine());
+            emit cursorLineChanged(m->cursorLine());
         }
     });
 }
 
-CoreView::CoreView(QWidget *parent) : BaseView(parent)
+CoreView::CoreView(QWidget* parent) : BaseView(parent)
 {
     splitter = new QSplitter(this);
     pageContiner = new ElaTabWidget(splitter);
@@ -26,7 +28,7 @@ CoreView::CoreView(QWidget *parent) : BaseView(parent)
     initComplete = true;
 }
 
-void CoreView::addNewTab(QWidget *widget, const QString &title)
+void CoreView::addNewTab(QWidget* widget, const QString& title)
 {
     pageContiner->addTab(widget, title);
 }
@@ -43,16 +45,17 @@ void CoreView::addNewEditorTab(mDocument doc)
     /**
      * @warning 这里感觉有点小问题, 但是现在想不起来
      */
-    if (!doc.path.isEmpty())
-    {
+    if (!doc.path.isEmpty()) {
         addNewTab(widget, QUrl(doc.path).fileName());
-    }
-    else{
+    } else {
         addNewTab(widget, tr("*New File"));
     }
-    connect(widget, &EditorView::mtextChanged, this, [=](const QString& newText){
-        qDebug()<<"Editor text changed, length:"<<newText.length();
-        emit ctextChanged(newText);
+    connect(widget, &EditorView::mtextChanged, this, [=](const QString& newText) {
+        qDebug() << "Editor text changed, length:" << newText.length();
+        emit ctextChanged(newText, widget->cursorLine());
+    });
+    connect(widget, &EditorView::cursorLineChanged, this, [=](int line) {
+        emit cursorLineChanged(line);
     });
 }
 
@@ -60,14 +63,14 @@ mDocument& CoreView::getCurrentDocument()
 {
     auto p = pageContiner->currentWidget();
     EditorView* m = qobject_cast<EditorView*>(p);
-    if(m){
+    if (m) {
         return m->m_document;
     }
     static mDocument emptyDoc;
     return emptyDoc;
 }
 
-void CoreView::updateCurrentTabName(const QString &name)
+void CoreView::updateCurrentTabName(const QString& name)
 {
     int index = pageContiner->currentIndex();
     pageContiner->setTabText(index, name);
@@ -86,7 +89,12 @@ void CoreView::saveAs()
 {
 }
 
-void CoreView::updatePreview(const std::string &html)
+void CoreView::updatePreview(const std::string& html, int cursorLine)
 {
-    previewView->updateContent(html);
+    previewView->updateContent(html, cursorLine);
+}
+
+void CoreView::updatePreviewScroll(int cursorLine)
+{
+    previewView->setCursorLine(cursorLine);
 }

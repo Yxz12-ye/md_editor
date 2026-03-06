@@ -1,5 +1,7 @@
 #include "PreviewView.h"
 
+#include <QString>
+
 void PreviewView::initializeWebView2()
 {
     //开始窗口webview2窗口
@@ -43,11 +45,6 @@ HRESULT PreviewView::OnControllerCompleted(HRESULT result, ICoreWebView2Controll
     m_webViewController->put_Bounds(rect);
 
 
-    //导航地址
-    QString mUrlstring = "https://www.bilibili.com/";
-    m_webView->Navigate(mUrlstring.toStdWString().c_str());
-
-
     //开始
     m_webView->add_NavigationStarting(
         Microsoft::WRL::Callback<ICoreWebView2NavigationStartingEventHandler>(
@@ -88,9 +85,9 @@ HRESULT PreviewView::OnNavigationCompleted(ICoreWebView2 *sender, ICoreWebView2N
     if (!isSuccess) {
         //加载失败
 
-    }else{
+    } else {
         //加载成功
-
+        applyCursorLine(m_pendingCursorLine);
     }
 
     return S_OK;
@@ -115,9 +112,11 @@ PreviewView::PreviewView(QWidget *parent) : BaseView(parent)
     initializeWebView2();
 }
 
-void PreviewView::updateContent(const std::string &html)
+void PreviewView::updateContent(const std::string &html, int cursorLine)
 {
     if (m_webView) {
+        m_pendingCursorLine = normalizeCursorLine(cursorLine);
+
         // 将UTF-8字符串转换为UTF-16
         int wideLength = MultiByteToWideChar(CP_UTF8, 0, html.c_str(), -1, nullptr, 0);
         if (wideLength > 0) {
@@ -130,6 +129,47 @@ void PreviewView::updateContent(const std::string &html)
             m_webView->NavigateToString(htmlContent.c_str());
         }
     }
+}
+
+void PreviewView::setCursorLine(int cursorLine)
+{
+    m_pendingCursorLine = normalizeCursorLine(cursorLine);
+    applyCursorLine(m_pendingCursorLine);
+}
+
+int PreviewView::normalizeCursorLine(int cursorLine)
+{
+    return cursorLine > 0 ? cursorLine : 1;
+}
+
+void PreviewView::applyCursorLine(int cursorLine)
+{
+    if (!m_webView) {
+        return;
+    }
+
+    const QString script = QStringLiteral(
+        "(function(){"
+        "const line=%1;"
+        "const nodes=document.querySelectorAll('[data-sourcepos]');"
+        "if(!nodes.length){return;}"
+        "const parse=function(raw){const m=/^(\\d+):\\d+-(\\d+):\\d+$/.exec(raw||'');if(!m){return null;}return {s:parseInt(m[1],10),e:parseInt(m[2],10)};};"
+        "let target=null;"
+        "for(const el of nodes){"
+        "const p=parse(el.getAttribute('data-sourcepos'));"
+        "if(!p){continue;}"
+        "if(line>=p.s&&line<=p.e){target=el;break;}"
+        "if(line<p.s){target=el;break;}"
+        "target=el;"
+        "}"
+        "if(!target){return;}"
+        "const rect=target.getBoundingClientRect();"
+        "const y=Math.max(0,window.scrollY+rect.top-Math.round(window.innerHeight*0.25));"
+        "window.scrollTo(0,y);"
+        "})();"
+    ).arg(normalizeCursorLine(cursorLine));
+
+    m_webView->ExecuteScript(script.toStdWString().c_str(), nullptr);
 }
 
 void PreviewView::resizeEvent(QResizeEvent *event)

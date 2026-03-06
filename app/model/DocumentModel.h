@@ -26,6 +26,6 @@ public:
     bool isNull();
     void requestNewEditor(QTextDocument* doc);
 
-    std::string& requestParser(const QString& markdownText);
+    std::string requestParser(const QString& markdownText);
 
 };

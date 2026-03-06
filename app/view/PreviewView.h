@@ -27,6 +27,9 @@ private:
     //拦截窗口事件
     HRESULT OnNewWindowRequested(ICoreWebView2* sender, ICoreWebView2NewWindowRequestedEventArgs* args);
 
+    void applyCursorLine(int cursorLine);
+    static int normalizeCursorLine(int cursorLine);
+
     wil::com_ptr<ICoreWebView2Controller> m_webViewController;//控制器
     wil::com_ptr<ICoreWebView2> m_webView;//webview2
 
@@ -34,11 +37,14 @@ private:
     EventRegistrationToken m_navigationCompletedToken;
     EventRegistrationToken m_NewWindowRequested;
 
+    int m_pendingCursorLine = 1;
+
 public:
     PreviewView(QWidget* parent = nullptr);
     ~PreviewView(){};
 
-    void updateContent(const std::string& html);
+    void updateContent(const std::string& html, int cursorLine);
+    void setCursorLine(int cursorLine);
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
